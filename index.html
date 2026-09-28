@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Safety Partner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#14181B; --panel:#1E262B; --panel2:#242E34; --text:#ECEFF1; --muted:#9AA7AD;
+  --accent:#F5A623; --accent-ink:#2A1D02; --accent2:#2E9C8F; --danger:#E2574C; --info:#6C8EBF; --border:#313B42;
+}
+@media (prefers-color-scheme: light){
+  :root:not([data-theme="dark"]){
+    --bg:#F3F1EA; --panel:#FFFFFF; --panel2:#EFEAE0; --text:#20262B; --muted:#5B6469;
+    --accent:#C97A1E; --accent-ink:#FFF6E8; --accent2:#1F6F68; --danger:#B03A31; --info:#3E5C82; --border:#DED6C6;
+  }
+}
+:root[data-theme="light"]{
+  --bg:#F3F1EA; --panel:#FFFFFF; --panel2:#EFEAE0; --text:#20262B; --muted:#5B6469;
+  --accent:#C97A1E; --accent-ink:#FFF6E8; --accent2:#1F6F68; --danger:#B03A31; --info:#3E5C82; --border:#DED6C6;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:calc(64px + env(safe-area-inset-top,0px))}
+body{margin:0; background:var(--bg); color:var(--text); font-family:'Work Sans',-apple-system,'Segoe UI',sans-serif; line-height:1.55;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px)}
+h1,h2,h3{font-family:'Barlow Condensed',Impact,'Arial Narrow',sans-serif; font-weight:700; letter-spacing:.2px; margin:0 0 .4em}
+h2{font-size:2rem} h3{font-size:1.3rem}
+p{margin:0 0 1em; max-width:70ch}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent); outline-offset:2px}
+.hazard{height:8px; background:repeating-linear-gradient(135deg,var(--accent) 0 18px,var(--bg) 18px 36px)}
+.nav{position:sticky; top:env(safe-area-inset-top,0px); z-index:20; background:var(--bg); border-bottom:1px solid var(--border)}
+.nav-in{max-width:1100px; margin:0 auto; padding:.9rem 1.2rem; display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap}
+.brand{display:flex; align-items:center; gap:.5rem; font-family:'Barlow Condensed',sans-serif; font-size:1.4rem; font-weight:700}
+.brand span{color:var(--accent)}
+.nav a.link{color:var(--text); text-decoration:none; margin-left:1.1rem; font-size:.95rem; font-weight:500}
+.nav a.link:hover{color:var(--accent)}
+.nav-right{display:flex; align-items:center; gap:1.1rem; flex-wrap:wrap}
+.nav-links{display:flex; flex-wrap:wrap}
+.profile-badge{display:flex; align-items:center; gap:.55rem; padding-left:1rem; border-left:1px solid var(--border)}
+.profile-badge img{width:36px; height:36px; border-radius:50%; object-fit:cover; border:2px solid var(--accent); display:block}
+.profile-badge span{font-weight:600; font-size:.92rem; white-space:nowrap}
+.wrap{max-width:1100px; margin:0 auto; padding:3.2rem 1.2rem}
+.hero{padding-top:3.6rem}
+.hero h1{font-size:clamp(2.4rem,6vw,4rem); max-width:14ch; animation:rise .7s ease both}
+.hero p.lead{font-size:1.15rem; color:var(--muted); max-width:56ch; animation:rise .7s .1s ease both}
+@keyframes rise{from{opacity:0; transform:translateY(14px)} to{opacity:1; transform:translateY(0)}}
+@media (prefers-reduced-motion: reduce){ .hero h1,.hero p.lead{animation:none} }
+.chips{display:flex; gap:.6rem; flex-wrap:wrap; margin-top:1.4rem}
+.chip{border:1px solid var(--border); border-left:4px solid var(--accent); background:var(--panel); padding:.5rem .9rem; border-radius:4px; font-size:.9rem}
+section{border-top:1px solid var(--border)}
+.eyebrow{color:var(--accent2); font-weight:600; font-size:.85rem}
+.grid2{display:grid; grid-template-columns:1.3fr 1fr; gap:2rem}
+@media (max-width:760px){.grid2{grid-template-columns:1fr}}
+.box{background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:1.3rem}
+.box h3{margin-top:0}
+.formula{font-family:ui-monospace,Consolas,monospace; background:var(--panel2); padding:.7rem .9rem; border-radius:4px; margin:.6rem 0}
+.steps{display:flex; overflow-x:auto; gap:0; padding-bottom:.6rem; margin-top:1.6rem}
+.step{min-width:220px; flex:1 0 220px; padding:0 1.1rem 0 0; position:relative}
+.step:not(:last-child)::after{content:'';position:absolute; top:20px; right:0; width:1.1rem; height:2px; background:var(--border)}
+.stepnum{width:40px; height:40px; border-radius:50%; background:var(--accent); color:var(--accent-ink); font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:1.2rem; display:flex; align-items:center; justify-content:center; margin-bottom:.7rem}
+.step h3{font-size:1.05rem}
+.step p{font-size:.92rem; color:var(--muted)}
+.k3grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:1.1rem; margin-top:1.6rem}
+.k3card{background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:1.1rem}
+.k3card .ico{font-size:1.5rem}
+.k3card ul{margin:.5rem 0 0 1.1rem; padding:0; font-size:.93rem; color:var(--muted)}
+.k3card li{margin-bottom:.35rem}
+form{background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:1.6rem; margin-top:1.6rem}
+.frow{display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1rem}
+@media (max-width:640px){.frow{grid-template-columns:1fr}}
+label{display:block; font-size:.88rem; margin-bottom:.35rem; color:var(--muted)}
+input,select,textarea{width:100%; padding:.65rem .7rem; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:4px; font:inherit}
+textarea{min-height:90px; resize:vertical}
+button[type=submit]{background:var(--accent); color:var(--accent-ink); border:none; padding:.75rem 1.6rem; border-radius:4px; font-weight:600; font-size:1rem; cursor:pointer}
+button[type=submit]:disabled{opacity:.6; cursor:wait}
+#form-msg{margin-top:.8rem; font-size:.9rem}
+#db-status{background:var(--danger); color:#fff; padding:.8rem 1rem; border-radius:4px; margin-bottom:1rem; font-size:.9rem}
+.note{color:var(--muted); font-size:.9rem}
+.prose p{text-align:justify; hyphens:auto}
+.prose h3{margin-top:1.5rem}
+.vc-table{width:100%; border-collapse:collapse; margin:.7rem 0; font-size:.92rem}
+.vc-table th,.vc-table td{border:1px solid var(--border); padding:.5rem .6rem; text-align:left}
+.vc-table th{background:var(--panel2)}
+.board{display:flex; gap:1rem; overflow-x:auto; padding-bottom:.8rem; margin-top:1.6rem}
+.col{min-width:250px; flex:1 0 250px; background:var(--panel); border:1px solid var(--border); border-radius:6px; padding:.9rem}
+.col h3{display:flex; justify-content:space-between; align-items:center; font-size:1.05rem; margin-bottom:.7rem}
+.col h3 em{font-style:normal; background:var(--panel2); border-radius:20px; padding:.1rem .6rem; font-size:.85rem; font-family:'Work Sans',sans-serif}
+.kcard{background:var(--panel2); border-radius:5px; padding:.7rem .8rem; margin-bottom:.7rem; font-size:.92rem}
+.kcard-top{display:flex; justify-content:space-between; align-items:baseline; gap:.5rem; margin-bottom:.3rem}
+.kcard p{margin:0 0 .4rem; max-width:none}
+.kcard-foot{color:var(--muted); font-size:.8rem}
+.kcard-right{display:flex; align-items:center; gap:.4rem}
+.del-btn{background:none; border:1px solid var(--border); color:var(--muted); border-radius:4px; width:22px; height:22px; line-height:1; cursor:pointer; font-size:.8rem; padding:0}
+.del-btn:hover{background:var(--danger); color:#fff; border-color:var(--danger)}
+.del-btn:disabled{opacity:.5; cursor:wait}
+.badge{font-size:.72rem; padding:.15rem .5rem; border-radius:12px; white-space:nowrap; color:#fff}
+.badge-iso{background:var(--info)} .badge-k3{background:var(--danger)} .badge-teknis{background:var(--accent); color:var(--accent-ink)} .badge-ukur{background:var(--accent2)} .badge-lain{background:var(--muted)}
+.empty{color:var(--muted); font-size:.9rem}
+footer{padding:2rem 1.2rem; text-align:center; color:var(--muted); font-size:.85rem}
+.owner-btn{display:block; margin:.8rem auto 0; background:none; border:1px solid var(--border); color:var(--muted); border-radius:4px; padding:.3rem .8rem; font-size:.8rem; cursor:pointer}
+.owner-btn:hover{color:var(--text); border-color:var(--accent)}
+</style>
+</head>
+<body>
+<div class="hazard"></div>
+<nav class="nav"><div class="nav-in">
+  <div class="brand">🦺 SAFETY <span>PARTNER</span></div>
+  <div class="nav-right">
+    <div class="nav-links">
+      <a class="link" href="#materi">Materi</a>
+      <a class="link" href="#prosedur">Prosedur</a>
+      <a class="link" href="#k3">K3</a>
+      <a class="link" href="#observasi">Lapor Kendala</a>
+      <a class="link" href="#rekap">Rekap Mingguan</a>
+    </div>
+    <div class="profile-badge">
+      <img src="data:image/jpeg;base64,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" alt="Foto profil">
+      <span id="profile-name">Decka Ridho Ariraya</span>
+    </div>
+  </div>
+</div></nav>
+
+<div class="wrap hero">
+  <h1>Amankan setiap putaran, pantau setiap praktik.</h1>
+  <p class="lead">Safety Partner adalah panduan prosedur pembubutan dan K3 untuk kelas XI Teknik Pemesinan, sekaligus alat observasi teman sejawat: catat kendala saat praktik, dan hasilnya bisa dilihat semua orang, tersimpan tiap minggu.</p>
+  <div class="chips">
+    <div class="chip">Fase F · Konsentrasi Keahlian Teknik Pemesinan</div>
+    <div class="chip">Observasi berjalan 16 minggu pertemuan</div>
+  </div>
+</div>
+
+<section id="materi"><div class="wrap">
+  <div class="eyebrow">Materi</div>
+  <h2>Prosedur Pemesinan Bubut</h2>
+  <div class="grid2 prose">
+    <div>
+      <p>Pembubutan adalah proses pemesinan yang membuang material benda kerja berputar dengan pahat yang bergerak linear, untuk membentuk permukaan silindris, tirus, alur, atau ulir sesuai gambar kerja. Kualitas hasil bubut ditentukan oleh tiga hal: kebenaran urutan kerja, ketepatan parameter potong, dan kedisiplinan K3 selama proses berlangsung.</p>
+      <p>Toleransi dimensi hasil pembubutan mengacu pada standar toleransi umum (ISO 2768), sedangkan penentuan sudut dan geometri pahat mengikuti kaidah umum geometri alat potong. Kesesuaian terhadap standar inilah yang dinilai lewat observasi teman sejawat, bukan hanya hasil akhir, tapi juga cara kerja di tiap tahap.</p>
+    </div>
+    <div class="box">
+      <h3>Parameter potong dasar</h3>
+      <p class="note">Kecepatan spindel (n) dihitung dari kecepatan potong material (Vc) dan diameter benda kerja (D):</p>
+      <div class="formula">n = (Vc × 1000) / (π × D) &nbsp; [rpm]</div>
+      <p class="note">Feeding dan depth of cut disesuaikan jenis pengerjaan (roughing/finishing) dan spesifikasi material pada gambar kerja.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <h3>Jenis-Jenis Pekerjaan Bubut</h3>
+    <p>Facing meratakan permukaan ujung benda kerja hingga tegak lurus sumbu putar, biasanya jadi langkah awal sebelum ukuran panjang ditentukan. Turning lurus membentuk permukaan silindris sesuai diameter yang diminta gambar kerja, sedangkan taper turning membentuk permukaan tirus dengan menggeser eretan atas pada sudut tertentu. Chamfering membuat champer di ujung benda agar tidak tajam dan memudahkan perakitan, grooving/alur membuat celah sempit untuk dudukan seal atau ring, threading memotong ulir dalam maupun luar dengan pahat ulir sesuai kisar yang ditentukan, sementara drilling dan boring dipakai untuk membuat serta memperbesar lubang senter benda kerja. Knurling menambahkan tekstur bergerigi pada permukaan agar tidak licin saat dipegang.</p>
+    <h3>Jenis Pahat & Sistem Pencekaman</h3>
+    <p>Pahat HSS (High Speed Steel) cocok untuk kecepatan potong rendah hingga menengah, mudah diasah ulang, dan umum dipakai di bengkel sekolah. Pahat carbide bertahan pada kecepatan potong tinggi dan lebih awet untuk produksi berulang, namun lebih getas terhadap benturan. Pemilihan sudut potong pahat memengaruhi kehalusan permukaan dan umur pakai mata pahat. Untuk pencekaman, chuck rahang tiga (self-centering) dipakai untuk benda kerja silindris karena otomatis senter, chuck rahang empat (independent) dipakai untuk benda tidak simetris karena tiap rahang diatur terpisah, senter dan pembawa dipakai untuk benda kerja panjang agar tidak melentur, sedangkan kolet dipakai untuk benda kerja kecil yang butuh kesenteran presisi tinggi.</p>
+    <h3>Kecepatan Potong untuk Berbagai Material</h3>
+    <p>Kisaran kecepatan potong (Vc) berikut jadi acuan awal untuk menghitung putaran spindel; nilai pasti tetap mengikuti rekomendasi pabrikan pahat dan ketentuan pada job sheet.</p>
+    <table class="vc-table">
+      <tr><th>Material</th><th>Vc – Pahat HSS</th><th>Vc – Pahat Carbide</th></tr>
+      <tr><td>Baja karbon rendah</td><td>20–35 m/min</td><td>90–150 m/min</td></tr>
+      <tr><td>Baja karbon menengah</td><td>15–25 m/min</td><td>70–120 m/min</td></tr>
+      <tr><td>Besi tuang (cast iron)</td><td>10–20 m/min</td><td>60–100 m/min</td></tr>
+      <tr><td>Kuningan</td><td>40–70 m/min</td><td>120–200 m/min</td></tr>
+      <tr><td>Aluminium</td><td>60–100 m/min</td><td>200–350 m/min</td></tr>
+    </table>
+  </div>
+</div></section>
+
+<section id="prosedur"><div class="wrap">
+  <div class="eyebrow">Bagan Acuan Observasi</div>
+  <h2>Alur Prosedur Bubut Sesuai ISO</h2>
+  <p>Gunakan urutan ini sebagai acuan saat mengobservasi teman sejawat, lalu tandai tahap mana yang menjadi sumber kendala.</p>
+  <div class="steps">
+    <div class="step"><div class="stepnum">1</div><h3>Baca Gambar Kerja</h3><p>Pahami dimensi, toleransi, dan tanda pengerjaan pada job sheet sebelum mulai.</p></div>
+    <div class="step"><div class="stepnum">2</div><h3>Persiapan K3 & APD</h3><p>Wearpack, sepatu safety, kacamata, rambut diikat, lepas aksesori tangan.</p></div>
+    <div class="step"><div class="stepnum">3</div><h3>Pemeriksaan Mesin</h3><p>Cek pelumasan, kondisi center, pastikan kunci chuck sudah dilepas.</p></div>
+    <div class="step"><div class="stepnum">4</div><h3>Pemilihan Pahat</h3><p>Pilih jenis dan sudut pahat sesuai material dan jenis pengerjaan.</p></div>
+    <div class="step"><div class="stepnum">5</div><h3>Pencekaman Benda Kerja</h3><p>Pasang pada chuck/senter, periksa kesenteran agar tidak oleng.</p></div>
+    <div class="step"><div class="stepnum">6</div><h3>Setting Pahat</h3><p>Atur tinggi pahat setinggi center sumbu dan posisi tool post.</p></div>
+    <div class="step"><div class="stepnum">7</div><h3>Penentuan Parameter</h3><p>Hitung putaran spindel, feeding, dan depth of cut.</p></div>
+    <div class="step"><div class="stepnum">8</div><h3>Bubut Kasar</h3><p>Buang kelebihan material dengan depth of cut besar, feeding cepat.</p></div>
+    <div class="step"><div class="stepnum">9</div><h3>Bubut Halus</h3><p>Capai dimensi dan kehalusan akhir dengan depth of cut kecil.</p></div>
+    <div class="step"><div class="stepnum">10</div><h3>Pemeriksaan Dimensi</h3><p>Ukur dengan jangka sorong/mikrometer sesuai toleransi gambar.</p></div>
+    <div class="step"><div class="stepnum">11</div><h3>Pembersihan Mesin</h3><p>Matikan mesin, bersihkan tatal, kembalikan alat ke tempatnya.</p></div>
+    <div class="step"><div class="stepnum">12</div><h3>Pengisian Laporan</h3><p>Catat hasil kerja dan kendala pada job sheet/Safety Partner.</p></div>
+  </div>
+</div></section>
+
+<section id="k3"><div class="wrap">
+  <div class="eyebrow">Bagan K3</div>
+  <h2>Keselamatan Kerja Selama Praktik Bubut</h2>
+  <div class="k3grid">
+    <div class="k3card"><div class="ico">🥽</div><h3>APD Wajib</h3><ul><li>Wearpack & sepatu safety</li><li>Kacamata pelindung</li><li>Rambut diikat/ditutup</li><li>Tanpa sarung tangan/perhiasan saat mesin berputar</li></ul></div>
+    <div class="k3card"><div class="ico">🔧</div><h3>Sebelum Mengoperasikan</h3><ul><li>Area kerja bersih & rapi</li><li>Kunci chuck sudah dilepas</li><li>Kabel & tombol darurat berfungsi</li></ul></div>
+    <div class="k3card"><div class="ico">✋</div><h3>Selama Proses</h3><ul><li>Jangan sentuh benda kerja yang berputar</li><li>Bersihkan tatal dengan kuas/hook, bukan tangan</li><li>Jaga jarak aman dari serbuk logam</li></ul></div>
+    <div class="k3card"><div class="ico">🧹</div><h3>Setelah Proses</h3><ul><li>Matikan mesin sebelum melepas benda kerja</li><li>Bersihkan mesin & area kerja</li><li>Kembalikan alat ukur/pahat ke tempatnya</li></ul></div>
+    <div class="k3card"><div class="ico">🚨</div><h3>Keadaan Darurat</h3><ul><li>Kenali lokasi tombol emergency stop</li><li>Kenali lokasi kotak P3K</li><li>Segera lapor ke guru/instruktur</li></ul></div>
+    <div class="k3card"><div class="ico">🧴</div><h3>Penggunaan Coolant</h3><ul><li>Gunakan cairan pendingin sesuai takaran</li><li>Hindari kontak kulit berkepanjangan</li><li>Segera bersihkan tumpahan di lantai</li></ul></div>
+    <div class="k3card"><div class="ico">🚫</div><h3>Larangan Selama Praktik</h3><ul><li>Dilarang bercanda dekat mesin menyala</li><li>Dilarang meninggalkan mesin tanpa pengawasan</li><li>Dilarang mengukur benda kerja yang masih berputar</li></ul></div>
+    <div class="k3card"><div class="ico">📏</div><h3>Perawatan Alat Ukur</h3><ul><li>Bersihkan jangka sorong/mikrometer setelah dipakai</li><li>Simpan di tempat kering</li><li>Laporkan bila alat rusak atau tidak presisi</li></ul></div>
+    <div class="k3card"><div class="ico">📝</div><h3>Lapor Nyaris Celaka</h3><ul><li>Laporkan kejadian nyaris celaka meski tidak cedera</li><li>Jadikan bahan evaluasi bersama</li></ul></div>
+  </div>
+</div></section>
+
+<section id="observasi"><div class="wrap">
+  <div class="eyebrow">Untuk Observer</div>
+  <h2>Laporkan Kendala Praktik</h2>
+  <p>Diisi oleh siswa yang bertugas mengobservasi temannya. Laporan langsung tersimpan dan tampil di rekap mingguan untuk semua orang.</p>
+  <div id="db-status" hidden></div>
+  <form id="kendala-form">
+    <div class="frow">
+      <div><label for="namaObserver">Nama observer (kamu)</label><input id="namaObserver" name="namaObserver" required></div>
+      <div><label for="namaPraktikan">Nama teman yang diobservasi</label><input id="namaPraktikan" name="namaPraktikan" required></div>
+    </div>
+    <div class="frow">
+      <div><label for="minggu">Minggu observasi</label>
+        <select id="minggu" name="minggu"></select>
+      </div>
+      <div><label for="tanggal">Tanggal</label><input id="tanggal" name="tanggal" type="date" required></div>
+    </div>
+    <div class="frow">
+      <div><label for="kategori">Kategori kendala</label>
+        <select id="kategori" name="kategori">
+          <option value="iso">Prosedur ISO (urutan kerja)</option>
+          <option value="k3">K3 / Keselamatan</option>
+          <option value="teknis">Teknis mesin/alat</option>
+          <option value="ukur">Hasil ukur/toleransi</option>
+          <option value="lain">Lainnya</option>
+        </select>
+      </div>
+      <div></div>
+    </div>
+    <div style="margin-bottom:1rem">
+      <label for="deskripsi">Deskripsi kendala</label>
+      <textarea id="deskripsi" name="deskripsi" required placeholder="Contoh: lupa melepas kunci chuck sebelum menyalakan mesin"></textarea>
+    </div>
+    <button type="submit">Simpan Laporan</button>
+    <p id="form-msg" hidden></p>
+  </form>
+</div></section>
+
+<section id="rekap"><div class="wrap">
+  <div class="eyebrow">Untuk Semua Orang</div>
+  <h2>Rekap Kendala per Minggu</h2>
+  <p>Papan ini tampil sama untuk siapa pun yang membuka halaman ini dan tersimpan otomatis, cocok dipantau guru selama 16 minggu pertemuan observasi berjalan. Geser ke samping untuk melihat minggu lainnya.</p>
+  <div class="board" id="board"></div>
+</div></section>
+
+<footer>Safety Partner: panduan praktik & observasi teman sejawat, Konsentrasi Keahlian Teknik Pemesinan Bubut.<button id="owner-btn" type="button" class="owner-btn">Mode pemilik</button></footer>
+
+<script>
+(function(){
+  /* Tempel URL Web App dari Google Apps Script (berakhiran /exec) di antara tanda petik berikut */
+  const API_URL='PASTE_URL_WEB_APP_DI_SINI';
+  const TOTAL_WEEKS=16;
+  const weeks=Array.from({length:TOTAL_WEEKS},(_,i)=>i+1);
+  let reports=[];
+  let loadedOnce=false;
+  let pin='';
+  try{ pin=sessionStorage.getItem('sp_pin')||''; }catch(e){}
+  let canDelete=!!pin;
+
+  function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+  function fmtDate(d){ if(!d) return ''; const p=String(d).split('-'); if(p.length!==3) return d; const dt=new Date(+p[0],+p[1]-1,+p[2]); return dt.toLocaleDateString('id-ID',{day:'2-digit',month:'short',year:'numeric'}); }
+  function catLabel(c){return ({iso:'Prosedur ISO',k3:'K3',teknis:'Teknis Mesin',ukur:'Hasil Ukur',lain:'Lainnya'})[c]||'Lainnya';}
+  function todayStr(){ const d=new Date(); const p=n=>String(n).padStart(2,'0'); return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate()); }
+  function configured(){ return API_URL && API_URL.indexOf('PASTE_')!==0; }
+  function setStatus(t){ const el=document.getElementById('db-status'); el.textContent=t; el.hidden=!t; }
+
+  function buildWeekOptions(){
+    document.getElementById('minggu').innerHTML=weeks.map(w=>'<option value="'+w+'">Minggu '+w+'</option>').join('');
+  }
+  function buildBoard(){
+    document.getElementById('board').innerHTML=weeks.map(w=>'<div class="col"><h3>Minggu '+w+' <em id="count-'+w+'">0</em></h3><div id="col-'+w+'"><p class="empty">Memuat…</p></div></div>').join('');
+  }
+  function render(){
+    weeks.forEach(w=>{
+      const col=document.getElementById('col-'+w);
+      const items=reports.filter(r=>Number(r.minggu)===w).sort((a,b)=>(Number(b.createdAt)||0)-(Number(a.createdAt)||0));
+      document.getElementById('count-'+w).textContent=items.length;
+      if(!items.length){ col.innerHTML='<p class="empty">Belum ada laporan kendala minggu ini.</p>'; return; }
+      col.innerHTML=items.map(r=>'<div class="kcard"><div class="kcard-top"><strong>'+esc(r.namaPraktikan)+'</strong><span class="kcard-right"><span class="badge badge-'+esc(r.kategori||'lain')+'">'+esc(catLabel(r.kategori))+'</span>'+(canDelete?'<button class="del-btn" data-id="'+esc(r.id)+'" title="Hapus laporan ini">✕</button>':'')+'</span></div><p>'+esc(r.deskripsi)+'</p><div class="kcard-foot">Observer: '+esc(r.namaObserver)+' • '+esc(fmtDate(r.tanggal))+'</div></div>').join('');
+    });
+  }
+
+  async function api(payload){
+    const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(payload)});
+    return await res.json();
+  }
+
+  async function load(){
+    if(!configured()) return;
+    try{
+      const res=await fetch(API_URL,{cache:'no-store'});
+      const json=await res.json();
+      if(!json.ok) throw new Error(json.error||'Gagal memuat');
+      reports=json.data||[];
+      loadedOnce=true;
+      setStatus('');
+      render();
+    }catch(err){
+      console.error(err);
+      if(!loadedOnce){
+        setStatus('Data belum bisa dimuat. Periksa koneksi internet, lalu muat ulang halaman.');
+        weeks.forEach(w=>{document.getElementById('col-'+w).innerHTML='<p class="empty">Papan belum bisa memuat data.</p>';});
+      }
+    }
+  }
+
+  function updateOwnerBtn(){
+    document.getElementById('owner-btn').textContent=canDelete?'Keluar mode pemilik':'Mode pemilik';
+  }
+
+  function init(){
+    buildWeekOptions();
+    buildBoard();
+    document.getElementById('tanggal').value=todayStr();
+    updateOwnerBtn();
+
+    const form=document.getElementById('kendala-form');
+    const msg=document.getElementById('form-msg');
+
+    if(!configured()){
+      setStatus('Alamat Google Sheets belum dipasang. Buka file index.html lalu isi API_URL dengan URL Web App.');
+      weeks.forEach(w=>{document.getElementById('col-'+w).innerHTML='<p class="empty">Papan belum tersambung ke penyimpanan.</p>';});
+    }
+
+    form.addEventListener('submit', async function(e){
+      e.preventDefault();
+      if(!configured()){ alert('Penyimpanan belum tersambung.'); return; }
+      const f=e.target;
+      const data={
+        minggu:Number(f.minggu.value),
+        namaObserver:f.namaObserver.value.trim(),
+        namaPraktikan:f.namaPraktikan.value.trim(),
+        kategori:f.kategori.value,
+        deskripsi:f.deskripsi.value.trim(),
+        tanggal:f.tanggal.value
+      };
+      if(!data.namaObserver||!data.namaPraktikan||!data.deskripsi) return;
+      const btn=f.querySelector('button[type=submit]');
+      btn.disabled=true; btn.textContent='Menyimpan…';
+      try{
+        const r=await api({action:'add',data:data});
+        if(!r.ok) throw new Error(r.error||'Gagal menyimpan');
+        f.reset();
+        document.getElementById('tanggal').value=todayStr();
+        msg.textContent='Tersimpan. Bisa langsung dilihat semua orang di rekap mingguan.';
+        msg.hidden=false;
+        setTimeout(()=>{msg.hidden=true;},4000);
+        await load();
+      }catch(err){
+        console.error(err);
+        msg.textContent='Gagal menyimpan laporan. Coba lagi.';
+        msg.hidden=false;
+      }finally{
+        btn.disabled=false; btn.textContent='Simpan Laporan';
+      }
+    });
+
+    document.getElementById('board').addEventListener('click', async function(e){
+      const btn=e.target.closest('.del-btn');
+      if(!btn||!canDelete) return;
+      const id=btn.getAttribute('data-id');
+      if(!id||!confirm('Hapus laporan kendala ini?')) return;
+      btn.disabled=true;
+      try{
+        const r=await api({action:'delete',id:id,pin:pin});
+        if(!r.ok){
+          if(r.error==='PIN salah'){ setOwner(''); }
+          throw new Error(r.error||'Gagal menghapus');
+        }
+        await load();
+      }catch(err){
+        console.error(err);
+        alert('Gagal menghapus laporan: '+err.message);
+        btn.disabled=false;
+      }
+    });
+
+    function setOwner(p){
+      pin=p; canDelete=!!p;
+      try{ if(p) sessionStorage.setItem('sp_pin',p); else sessionStorage.removeItem('sp_pin'); }catch(e){}
+      updateOwnerBtn();
+      render();
+    }
+
+    document.getElementById('owner-btn').addEventListener('click', async function(){
+      if(canDelete){ setOwner(''); return; }
+      if(!configured()){ alert('Penyimpanan belum tersambung.'); return; }
+      const p=prompt('Masukkan PIN pemilik:');
+      if(!p) return;
+      try{
+        const r=await api({action:'verify',pin:p});
+        if(r.ok) setOwner(p); else alert('PIN salah.');
+      }catch(err){
+        alert('Tidak bisa memeriksa PIN. Coba lagi.');
+      }
+    });
+
+    load();
+    setInterval(function(){ if(!document.hidden) load(); },30000);
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
